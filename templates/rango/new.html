@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<!--{% load static %}-->
+{% load staticfiles %}
+
+<html>
+<head>
+	<title>New file!!</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
+</head>
+<body>
+<h1>It's a new day!</h1>{{newbold}}<br>
+<a href='/rango'>Index</a><br>
+<img src="{%static "super.jpg"%}" alt="Picture arrow"/> <!--Images -->
+</body>
+</html>
