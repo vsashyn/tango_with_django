@@ -4,7 +4,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from rango.models import Category
 from rango.models import Page
-
+from urllib import quote, unquote
 def index(request):
     # Request the context of the request.
     # The context contains information such as the client's machine details, for example.
@@ -17,7 +17,7 @@ def index(request):
 	page_list = Page.objects.order_by('-views')[:5]
 	context_dict = {'categories': category_list, 'most_pages': page_list}
 	for category in category_list:
-		category.url = category.name.replace(' ', '_')
+		category.url = category.name.replace(' ','_')
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
     # Note that the first parameter is the template we wish to use.
@@ -39,7 +39,7 @@ def about(request):
 
 def category(request, category_name_url):
 	context = RequestContext(request)
-	category_name = category_name_url.replace('_', ' ')
+	category_name = category_name_url.replace('_',' ')
 	context_dict = {'category_name': category_name}
 	try:
 		category = Category.objects.get(name=category_name)
