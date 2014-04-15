@@ -6,7 +6,7 @@ from rango.models import Category
 from rango.models import Page
 from urllib import quote, unquote
 from rango.forms import CategoryForm
-
+from rango.forms import PageForm
 def index(request):
     # Request the context of the request.
     # The context contains information such as the client's machine details, for example.
@@ -42,7 +42,7 @@ def about(request):
 def category(request, category_name_url):
 	context = RequestContext(request)
 	category_name = category_name_url.replace("_", " ")
-	context_dict = {'category_name': category_name}
+	context_dict = {'category_name': category_name, 'category_name_url': category_name_url}
 	try:
 		category = Category.objects.get(name=category_name)
 		pages = Page.objects.filter(category=category)
