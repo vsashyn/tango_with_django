@@ -19,7 +19,7 @@ def index(request):
 	page_list = Page.objects.order_by('-views')[:5]
 	context_dict = {'categories': category_list, 'most_pages': page_list}
 	for category in category_list:
-		category.url = category.name.replace(" ", "_")
+		category.url = encode_url(category.name)
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
     # Note that the first parameter is the template we wish to use.
@@ -39,9 +39,18 @@ def about(request):
 	context_dict = {'newbold': "It 's my about page/ :)"}
 	return render_to_response('rango/new.html', context_dict, context)
 
+def encode_url(category_name):
+	category_name_url = category_name.replace(" ", "_")
+	return category_name_url
+
+def decode_url(category_name_url):
+	category_name = category_name_url.replace("_", " ")
+	return category_name
+
 def category(request, category_name_url):
 	context = RequestContext(request)
-	category_name = category_name_url.replace("_", " ")
+	category_name = decode_url(category_name_url)
+#	category_name = category_name_url.replac:we("_", " ")
 	context_dict = {'category_name': category_name, 'category_name_url': category_name_url}
 	try:
 		category = Category.objects.get(name=category_name)
@@ -49,7 +58,7 @@ def category(request, category_name_url):
 		context_dict['pages'] = pages
 		context_dict['category'] = category
 	except Category.DoesNotExist:
-		return render_to_response('rango/add_category.html', context)
+		return render_to_response('rango/category.html', context_dict, context)
 	return render_to_response('rango/category.html', context_dict, context)
 
 
@@ -77,7 +86,7 @@ def add_page(request, category_name_url):
 				cat = Category.objects.get(name=category_name)
 				page.category = cat
 			except Category.DoesNotExist:
-				return render_to_response('rango/add_category.html', {}, context)
+				return render_to_response('rango/add_page.html', {'error_message': "YOu haven't this category!"},context)
 			page.views = 0
 			page.save()
 			return category(request, category_name_url)
