@@ -4,18 +4,19 @@
 	<head>
 	<title>Rango</title>
 	</head>
-	
 	<body>
-{% if user.is_authenticated %}
+	{% if user.is_authenticated %}
 		<h1>Rango says... hello {{ user.username }}</h1>
-		<a href="/rango/restricted/">Restricted page</a>
+<!--		<a href="/rango/restricted/">Restricted page</a>-->
 		<br/>
 		<a href="/rango/logout/">Logout</a>
-{% else %}
+	{% else %}
 		<h1>Rango says... hello world !</h1>
 		<a href="/rango/register">Register here!</a>
+		<br/>
 		<a href="/rango/login/">Login</a><br />
-{% endif %}
+	{% endif %}
+	<h3>Next list of categories</h3>
 	{%if categories%}
 <ul>
 		{% for category in categories %}
@@ -40,7 +41,11 @@
 <!--	 <strong>{{ boldmessage }} </strong><br />-->
 <br/>
 <br/>
+	{% if user.is_authenticated %}
 	<a href="/rango/add_category/">Add a new Category</a>
+	{% else %}
+	Please <a href="/rango/login/">login,</a> if you wanna create new category!
+	{% endif %}
 <br>
 	<a href="/rango/about/">About</a><br />
 	<br/>

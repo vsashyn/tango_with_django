@@ -66,7 +66,7 @@ def category(request, category_name_url):
 		return render_to_response('rango/category.html', context_dict, context)
 	return render_to_response('rango/category.html', context_dict, context)
 
-
+@login_required
 def add_category(request):
 	context = RequestContext(request)
 	if request.method == 'POST':
@@ -80,6 +80,7 @@ def add_category(request):
 		form = CategoryForm()
 	return render_to_response('rango/add_category.html', {'form': form}, context)
 
+@login_required
 def add_page(request, category_name_url):
 	context = RequestContext(request)
 	category_name = category_name_url.replace("_", " ")
@@ -135,7 +136,6 @@ def user_login(request):
 	if request.method == 'POST':
 		username = request.POST['username']
 		password = request.POST['password']
-
 		user = authenticate(username=username, password=password)
 		if user:
 			if user.is_active:
@@ -145,13 +145,16 @@ def user_login(request):
 				return HttpResponse("You Rango account is disabled.")
 		else:
 			print "Invalid login details: {0} {1}".format(username, password)
-			return HttpResponse("Invalid login details supplied.")
+			context_dict = {'err_login':username,'err_password':password}
+			return render_to_response('rango/login.html',context_dict,context)
+#			return HttpResponse("Invalid login details supplied. ")
 	else:
 		return render_to_response('rango/login.html',{},context)
 
 @login_required
 def restricted(request):
 	return HttpResponse("Science you are logged in, you can see this text !!")
+
 @login_required
 def user_logout(request):
 	logout(request)

@@ -5,7 +5,15 @@
 	</head>
 
 <body>
-	<h1> Login to Rango </h1>
+	{% if err_login %}
+		<h3> Wrong username/password combinations. </h3>
+	{% endif %}
+
+
+
+
+
+	<h1> Please, login to Rango </h1>
 	
 	<form id="login_form" method="post" action="/rango/login/">
 	{% csrf_token %}
